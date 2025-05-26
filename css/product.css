@@ -1,0 +1,150 @@
+body {
+    padding-top: 110px;
+    /* Đẩy nội dung xuống dưới header */
+}
+
+.container-flex {
+    display: flex;
+    gap: 30px;
+}
+
+.sidebar {
+    width: 250px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 6px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+.sidebar h4 {
+    margin-bottom: 10px;
+    color: #1a1a2e;
+    font-size: 1.1rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.sidebar ul li {
+    margin: 8px 0;
+}
+
+.sidebar ul li label {
+    cursor: pointer;
+    font-size: 0.95rem;
+    color: #333;
+}
+
+.product-area {
+    flex: 1;
+}
+
+.product-wrapper {
+    padding: 40px 20px 80px;
+    background-color: #f8f9fa;
+}
+
+.product-title {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    font-weight: bold;
+    color: #1a1a2e;
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.product-card {
+    background-color: #fff;
+    border-radius: 6px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+}
+
+.product-card img {
+    width: 100%;
+    height: 220px;
+    object-fit: contain;
+    background-color: #f5f5f5;
+    /* Tùy chọn: màu nền nếu ảnh nhỏ */
+    padding: 10px;
+}
+
+.product-card .product-info {
+    padding: 15px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.product-info h3 {
+    font-size: 1rem;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.product-info .price {
+    font-weight: bold;
+    color: #4361ee;
+    margin-bottom: 10px;
+}
+
+.product-info .rating {
+    color: #ffcc00;
+    margin-bottom: 10px;
+}
+
+.product-info .btn {
+    padding: 8px;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+
+
+.control-panel {
+  margin-bottom: 20px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 15px;
+}
+
+.control-panel h4 {
+  font-size: 1.1rem;
+  color: #1a1a2e;
+  margin-bottom: 10px;
+}
+
+.control-panel ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.control-panel ul li {
+  padding: 6px 0;
+  font-size: 0.95rem;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.control-panel ul li:hover {
+  color: #4361ee;
+}
