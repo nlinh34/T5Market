@@ -1,0 +1,10 @@
+{
+  "name": "t5-market",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "concurrently \"npm run dev --prefix backend\" \"live-server frontend --port=3000\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.0.0"
+  }
+}
