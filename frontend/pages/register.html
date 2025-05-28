@@ -1,0 +1,319 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng ký | T5 Market</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/home.css">
+    <style>
+        body {
+    padding-top: 110px;
+    /* Đẩy nội dung xuống dưới header */
+}
+
+        .auth-container {
+            max-width: 500px;
+            margin: 100px auto;
+            padding: 40px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .auth-title {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--dark-color);
+            text-align: center;
+        }
+
+        .auth-subtitle {
+            color: var(--text-light);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
+        }
+
+        .auth-btn {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+        }
+
+        .auth-footer {
+            text-align: center;
+            margin-top: 30px;
+            color: var(--text-light);
+        }
+
+        .auth-footer a {
+            color: var(--primary-color);
+        }
+
+        .password-requirements {
+            margin-top: 5px;
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .password-requirements ul {
+            padding-left: 20px;
+            margin-top: 5px;
+        }
+
+        .password-match {
+            color: green;
+            font-size: 0.9rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .password-mismatch {
+            color: red;
+            font-size: 0.9rem;
+            margin-top: 5px;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="../pages/home.html">
+                    <img src="../images/home/logo.jpg" alt="T5 Market Logo" style="width: 90px; height: 90px;">
+                </a>
+                <div class="search-container">
+                    <form action="#" method="GET">
+                        <input type="text" placeholder="Tìm kiếm sản phẩm..." name="search" class="search-input">
+                        <button type="submit" class="search-btn"><i class="fas fa-search"></i></button>
+                    </form>
+                </div>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="#" style="font-size:21px"><i class="fa-solid fa-bell"></i></a></li>
+                    <li><a href="#" style="font-size:21px"><i class="fa-solid fa-comments"></i></a></li>
+                    <li><a href="./shoppingcart.html" style="font-size:21px"><i class="fa-solid fa-cart-shopping"></i></a></li>
+                    <li class="dropdown"><a href="#" style="font-size:21px"><i class="fa-solid fa-user"></i></a>
+                    <ul class="dropdown-menu">
+                            <li><a href="./login.html">Đăng nhập</a></li>
+                            <li><a href="./register.html">Đăng ký</a></li>
+                            <li><a href="#">Đăng xuất</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#"><i class="fa-solid fa-bars"></i>Danh mục<i class="fas fa-caret-down"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Điện thoại</a></li>
+                            <li><a href="#">Máy tính bảng</a></li>
+                            <li><a href="#">Laptop</a></li>
+                            <li><a href="#">Máy tính để bàn</a></li>
+                            <li><a href="#">Máy ảnh, Máy quay</a></li>
+                            <li><a href="#">Thiết bị đeo thông minh</a></li>
+                            <li><a href="#">Phụ kiện (Màn hình, Chuột,...)</a></li>
+                            <li><a href="#">Linh kiện (RAM, Card,...)</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#features">Chức năng</a></li>
+                    <li><a href="#testimonials">Về chúng tôi</a></li>
+                    <li><a href="#contact">Liên hệ</a></li>
+                    <li><a href="#" class="btn">Đăng tin</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <div class="auth-container">
+            <h1 class="auth-title">Đăng ký tài khoản</h1>
+            <p class="auth-subtitle">Tạo tài khoản để trải nghiệm mua sắm tốt nhất</p>
+
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="name">Họ và tên</label>
+                    <input type="text" id="name" class="form-control" placeholder="Nhập họ và tên" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" class="form-control" placeholder="Nhập địa chỉ email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Số điện thoại</label>
+                    <input type="tel" id="phone" class="form-control" placeholder="Nhập số điện thoại" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Mật khẩu</label>
+                    <input type="password" id="password" class="form-control" placeholder="Nhập mật khẩu" required>
+                    <div class="password-requirements">
+                        <p>Mật khẩu phải có:</p>
+                        <ul>
+                            <li>Ít nhất 8 ký tự</li>
+                            <li>1 chữ hoa và 1 chữ thường</li>
+                            <li>1 số</li>
+                            <li>1 ký tự đặc biệt</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Xác nhận mật khẩu</label>
+                    <input type="password" id="confirmPassword" class="form-control" placeholder="Nhập lại mật khẩu" required>
+                    <div id="passwordMatch" class="password-match">Mật khẩu khớp!</div>
+                    <div id="passwordMismatch" class="password-mismatch">Mật khẩu không khớp!</div>
+                </div>
+
+                <button type="submit" class="btn auth-btn">Đăng ký</button>
+            </form>
+
+            <div class="auth-footer">
+                <p>Đã có tài khoản? <a href="login.html">Đăng nhập ngay</a></p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>T5 Market</h3>
+                    <p>Nâng tầm trải nghiệm mua sắm của bạn với giải pháp thương mại điện tử thông minh, an toàn và liền
+                        mạch.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-column">
+                    <h3>Sản phẩm</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Tất cả sản phẩm</a></li>
+                        <li><a href="#">Bán chạy nhất</a></li>
+                        <li><a href="#">Hàng mới về</a></li>
+                        <li><a href="#">Ưu đãi</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h3>Công ty</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Về chúng tôi</a></li>
+                        <li><a href="#">Tin tức</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h3>Hỗ trợ</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Hỗ trợ đơn hàng</a></li>
+                        <li><a href="#">Chính sách đổi trả</a></li>
+                        <li><a href="#">Liên hệ</a></li>
+                        <li><a href="#">Câu hỏi thường gặp</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 T5 Market. Cao đẳng FPT Polytechnic.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+            document.getElementById('navLinks').classList.toggle('active');
+        });
+
+        // Password match validation
+        const password = document.getElementById('password');
+        const confirmPassword = document.getElementById('confirmPassword');
+        const passwordMatch = document.getElementById('passwordMatch');
+        const passwordMismatch = document.getElementById('passwordMismatch');
+
+        function checkPasswordMatch() {
+            if (password.value && confirmPassword.value) {
+                if (password.value === confirmPassword.value) {
+                    passwordMatch.style.display = 'block';
+                    passwordMismatch.style.display = 'none';
+                } else {
+                    passwordMatch.style.display = 'none';
+                    passwordMismatch.style.display = 'block';
+                }
+            } else {
+                passwordMatch.style.display = 'none';
+                passwordMismatch.style.display = 'none';
+            }
+        }
+
+        password.addEventListener('keyup', checkPasswordMatch);
+        confirmPassword.addEventListener('keyup', checkPasswordMatch);
+
+        // Form validation
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (!name || !email || !phone || !password || !confirmPassword) {
+                alert('Vui lòng điền đầy đủ thông tin');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                alert('Mật khẩu không khớp');
+                return;
+            }
+            
+            // Here you would typically send the data to your server
+            console.log('Đăng ký với:', { name, email, phone, password });
+            
+            // Redirect after successful registration
+            // window.location.href = 'login.html';
+        });
+    </script>
+</body>
+
+</html>

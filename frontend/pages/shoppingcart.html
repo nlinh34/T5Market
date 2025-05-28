@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giỏ hàng - T5 Market</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/home.css">
+    <link rel="stylesheet" href="../css/shoppingcart.css">
+    <link rel="stylesheet" href="../js/main.js">
+    <style>
+        .coupon-container {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 10px;
+            border: 2px dashed #ccc;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+        }
+
+        .coupon-input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        .apply-button {
+            padding: 10px 16px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .apply-button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                 <a href="../pages/home.html">
+                    <img src="../images/home/logo.jpg" alt="T5 Market Logo" style="width: 90px; height: 90px;">
+                </a>
+                <div class="search-container">
+                    <form action="#" method="GET">
+                        <input type="text" placeholder="Tìm kiếm sản phẩm..." name="search" class="search-input">
+                        <button type="submit" class="search-btn"><i class="fas fa-search"></i></button>
+                    </form>
+                </div>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="#" style="font-size:21px"><i class="fa-solid fa-bell"></i></a></li>
+                    <li><a href="#" style="font-size:21px"><i class="fa-solid fa-comments"></i></a></li>
+                    <li><a href="../pages/shoppingcart.html" style="font-size:21px"><i
+                                class="fa-solid fa-cart-shopping"></i></a></li>
+                    <li class="dropdown"><a href="#" style="font-size:21px"><i class="fa-solid fa-user"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="./login.html">Đăng nhập</a></li>
+                            <li><a href="./register.html">Đăng ký</a></li>
+                            <li><a href="#">Đăng xuất</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="./products.html"><i class="fa-solid fa-bars"></i>Danh mục<i class="fas fa-caret-down"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Điện thoại</a></li>
+                            <li><a href="#">Máy tính bảng</a></li>
+                            <li><a href="#">Laptop</a></li>
+                            <li><a href="#">Máy tính để bàn</a></li>
+                            <li><a href="#">Máy ảnh, Máy quay</a></li>
+                            <li><a href="#">Thiết bị đeo thông minh</a></li>
+                            <li><a href="#">Phụ kiện (Màn hình, Chuột,...)</a></li>
+                            <li><a href="#">Linh kiện (RAM, Card,...)</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="../html/home.html#features">Chức năng</a></li>
+                    <li><a href="../pages/about.html">Về chúng tôi</a></li>
+                    <li><a href="../html/home.html#contact">Liên hệ</a></li>
+                    <li><a href="#" class="btn">Đăng tin</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Cart Section -->
+    <section class="cart-container">
+        <div class="container">
+            <div class="cart-header">
+                <h1 class="cart-title">Giỏ hàng của bạn</h1>
+                <span>3 sản phẩm</span>
+            </div>
+
+            <table class="cart-items">
+                <thead>
+                    <tr>
+                        <th>Sản phẩm</th>
+                        <th>Giá</th>
+                        <th>Số lượng</th>
+                        <th>Tổng</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="product-info">
+                                <img src="../images/product/pd1.jpg" alt="iPhone 13" class="product-img">
+                                <div>
+                                    <h4>iPhone 13 128GB</h4>
+                                    <p>Màu: Hồng</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td>15.990.000₫</td>
+                        <td>
+                            <div class="quantity-control">
+                                <button class="quantity-btn">-</button>
+                                <input type="number" value="1" min="1" class="quantity-input">
+                                <button class="quantity-btn">+</button>
+                            </div>
+                        </td>
+                        <td>15.990.000₫</td>
+                        <td><button class="remove-btn"><i class="fas fa-times"></i></button></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="product-info">
+                                <img src="../images/product/pd6-2.jpg" alt="MacBook Air" class="product-img">
+                                <div>
+                                    <h4>MacBook Air M1 2020</h4>
+                                    <p>RAM: 8GB, SSD: 256GB</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td>21.990.000₫</td>
+                        <td>
+                            <div class="quantity-control">
+                                <button class="quantity-btn">-</button>
+                                <input type="number" value="1" min="1" class="quantity-input">
+                                <button class="quantity-btn">+</button>
+                            </div>
+                        </td>
+                        <td>21.990.000₫</td>
+                        <td><button class="remove-btn"><i class="fas fa-times"></i></button></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="product-info">
+                                <img src="../images/product/pd3.jpg" alt="AirPods Pro" class="product-img">
+                                <div>
+                                    <h4>AirPods Pro 2</h4>
+                                    <p>Phiên bản 2022</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td>5.990.000₫</td>
+                        <td>
+                            <div class="quantity-control">
+                                <button class="quantity-btn">-</button>
+                                <input type="number" value="1" min="1" class="quantity-input">
+                                <button class="quantity-btn">+</button>
+                            </div>
+                        </td>
+                        <td>5.990.000₫</td>
+                        <td><button class="remove-btn"><i class="fas fa-times"></i></button></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="cart-summary">
+                <div class="summary-card">
+                    <div class="summary-row">
+                        <span>Tạm tính:</span>
+                        <span>43.970.000₫</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Giảm giá:</span>
+                        <span>-1.000.000₫</span>
+                    </div>
+                    <div class="summary-row summary-total">
+                        <span>Tổng cộng:</span>
+                        <span>42.970.000₫</span>
+                    </div>
+                    <div class="coupon-container">
+                        <input type="text" class="coupon-input" placeholder="Nhập mã giảm giá">
+                        <button class="apply-button">Áp dụng</button>
+                    </div>
+
+                    <button class="btn checkout-btn">Tiến hành thanh toán</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>T5 Market</h3>
+                    <p>Nâng tầm trải nghiệm mua sắm của bạn với giải pháp thương mại điện tử thông minh, an toàn và liền
+                        mạch.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-column">
+                    <h3>Sản phẩm</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Tất cả sản phẩm</a></li>
+                        <li><a href="#">Bán chạy nhất</a></li>
+                        <li><a href="#">Hàng mới về</a></li>
+                        <li><a href="#">Ưu đãi</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h3>Công ty</h3>
+                    <ul class="footer-links">
+                        <li><a href="../pages/about.html">Về chúng tôi</a></li>
+                        <li><a href="#">Tin tức</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h3>Hỗ trợ</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Hỗ trợ đơn hàng</a></li>
+                        <li><a href="#">Chính sách đổi trả</a></li>
+                        <li><a href="#">Liên hệ</a></li>
+                        <li><a href="#">Câu hỏi thường gặp</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 T5 Market. Cao đẳng FPT Polytechnic.</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+</html>
