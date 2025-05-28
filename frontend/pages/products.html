@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Homepage</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/product.css">
+    <link rel="stylesheet" href="../css/home.css">
+    <link rel="stylesheet" href="../java.js">
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="../pages/home.html">
+                    <img src="../images/home/logo.jpg" alt="T5 Market Logo" style="width: 90px; height: 90px;">
+                </a>
+                <div class="search-container">
+                    <form action="#" method="GET">
+                        <input type="text" placeholder="Tìm kiếm sản phẩm..." name="search" class="search-input">
+                        <button type="submit" class="search-btn"><i class="fas fa-search"></i></button>
+                    </form>
+                </div>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="#" style="font-size:21px"><i class="fa-solid fa-bell"></i></a></li>
+                    <li><a href="#" style="font-size:21px"><i class="fa-solid fa-comments"></i></a></li>
+                    <li><a href="./shoppingcart.html" style="font-size:21px"><i class="fa-solid fa-cart-shopping"></i></a></li>
+                    <li class="dropdown"><a href="#" style="font-size:21px"><i class="fa-solid fa-user"></i></a>
+                    <ul class="dropdown-menu">
+                            <li><a href="./login.html">Đăng nhập</a></li>
+                            <li><a href="./register.html">Đăng ký</a></li>
+                            <li><a href="#">Đăng xuất</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="dropdown">
+                        <a href="./products.html"><i class="fa-solid fa-bars"></i>Danh mục<i class="fas fa-caret-down"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Điện thoại</a></li>
+                            <li><a href="#">Máy tính bảng</a></li>
+                            <li><a href="#">Laptop</a></li>
+                            <li><a href="#">Máy tính để bàn</a></li>
+                            <li><a href="#">Máy ảnh, Máy quay</a></li>
+                            <li><a href="#">Thiết bị đeo thông minh</a></li>
+                            <li><a href="#">Phụ kiện (Màn hình, Chuột,...)</a></li>
+                            <li><a href="#">Linh kiện (RAM, Card,...)</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#features">Chức năng</a></li>
+                    <li><a href="./about.html">Về chúng tối</a></li>
+                    <li><a href="#contact">Liên hệ</a></li>
+                    <li><a href="#" class="btn">Đăng tin</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <!-- Danh mục sản phẩm + sidebar -->
+    <section class="product-wrapper">
+        <div class="container container-flex">
+            <!-- Sidebar lọc trái -->
+
+
+            <aside class="sidebar">
+                <!-- Bảng điều khiển -->
+                <div class="control-panel">
+                    <h4>Bảng điều khiển</h4>
+                    <ul>
+                        <li><i class="fas fa-tachometer-alt"></i> <a href="#" class="text">Bảng điều khiển</a></li>
+                        <li><i class="fas fa-history"></i> <a href="#" class="text"> Lịch sử đơn hàng</a></li>
+                        <li><i class="fas fa-truck"></i><a href="#" class="text"> Theo dõi đơn hàng</a></li>
+                        <li><i class="fas fa-shopping-cart"></i><a href="./shoppingcart.html" class="text">Giỏ hàng</a></li>
+                        <li><i class="fas fa-heart"></i><a href="#" class="text">Danh sách yêu thíchthích</a></li>
+                        <li><i class="fas fa-map-marker-alt"></i><a href="#" class="text">Giỏ hàng</a></li>
+                        <li><i class="fas fa-clock"></i> <a href="#" class="text">Lịch sử duyệt</a></li>
+                        <li><i class="fas fa-cog"></i><a href="#" class="text">Cài đặt</a></li>
+                    </ul>
+                </div>
+                <h4>Danh mục</h4>
+                <ul>
+                    <li><label><input type="checkbox" /> Điện thoại</label></li>
+                    <li><label><input type="checkbox" /> Laptop</label></li>
+                    <li><label><input type="checkbox" /> Tablet</label></li>
+                    <li><label><input type="checkbox" /> Máy in</label></li>
+                    <li><label><input type="checkbox" /> Đồng hồ</label></li>
+                </ul>
+
+                <h4>Thương hiệu</h4>
+                <ul>
+                    <li><label><input type="checkbox" /> Apple</label></li>
+                    <li><label><input type="checkbox" /> Samsung</label></li>
+                    <li><label><input type="checkbox" /> Xiaomi</label></li>
+                    <li><label><input type="checkbox" /> Dell</label></li>
+                </ul>
+
+                <h4>Khoảng giá</h4>
+                <ul>
+                    <li><label><input type="checkbox" /> Dưới 5 triệu</label></li>
+                    <li><label><input type="checkbox" /> 5 - 10 triệu</label></li>
+                    <li><label><input type="checkbox" /> Trên 10 triệu</label></li>
+                </ul>
+            </aside>
+
+            <!-- Khu vực sản phẩm -->
+            <div class="product-area">
+                <h2 class="product-title">Danh mục sản phẩm</h2>
+                <div class="product-grid">
+                    <div class="product-card">
+                        <img src="../images/product/pd1.jpg" alt="Iphone 13 pro max" />
+                        <div class="product-info">
+                            <h3>Iphone 13 pro max</h3>
+                            <div class="price">23.500.000đ</div>
+                            <div class="rating">★★★★★</div>
+                            <button class="btn"> <a href="./product.html" style="color:white;">Mua ngay</a></button>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <img src="../images/product/pd2.jpg" alt="iPad Gen 9" />
+                        <div class="product-info">
+                            <h3>iPad Gen 9</h3>
+                            <div class="price">7.900.000đ</div>
+                            <div class="rating">★★★★☆</div>
+                            <button class="btn"> <a href="./product.html" style="color:white;">Mua ngay</a></button>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <img src="../images/product/pd3.jpg" alt="Laptop HP i5" />
+                        <div class="product-info">
+                            <h3>Laptop HP i5</h3>
+                            <div class="price">10.500.000đ</div>
+                            <div class="rating">★★★★★</div>
+                            <button class="btn"> <a href="./product.html" style="color:white;">Mua ngay</a></button>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <img src="../images/product/pd4.jpg" alt="Apple Watch SE" />
+                        <div class="product-info">
+                            <h3>Apple Watch SE</h3>
+                            <div class="price">5.200.000đ</div>
+                            <div class="rating">★★★★☆</div>
+                            <button class="btn"> <a href="./product.html" style="color:white;">Mua ngay</a></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-grid">
+                    <div class="product-card">
+                        <img src="../images/product/pd5.jpg" alt="Điện thoại Xiaomi" />
+                        <div class="product-info">
+                            <h3>Điện thoại Xiaomi</h3>
+                            <div class="price">3.500.000đ</div>
+                            <div class="rating">★★★★★</div>
+                            <button class="btn"> <a href="./product.html" style="color:white;">Mua ngay</a></button>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <img src="../images/product/pd3.jpg" alt="iPad Gen 9" />
+                        <div class="product-info">
+                            <h3>iPad Gen 9</h3>
+                            <div class="price">7.900.000đ</div>
+                            <div class="rating">★★★★☆</div>
+                            <button class="btn"> <a href="./product.html" style="color:white;">Mua ngay</a></button>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <img src="../images/product/pd2.jpg" alt="Laptop HP i5" />
+                        <div class="product-info">
+                            <h3>Laptop HP i5</h3>
+                            <div class="price">10.500.000đ</div>
+                            <div class="rating">★★★★★</div>
+                            <button class="btn"> <a href="./product.html" style="color:white;">Mua ngay</a></button>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <img src="../images/product/pd4.jpg" alt="Apple Watch SE" />
+                        <div class="product-info">
+                            <h3>Apple Watch SE</h3>
+                            <div class="price">5.200.000đ</div>
+                            <div class="rating">★★★★☆</div>
+                            <button class="btn"> <a href="./product.html" style="color:white;">Mua ngay</a></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-grid">
+                    <div class="product-card">
+                        <img src="../images/product/pd4.jpg" alt="Điện thoại Xiaomi" />
+                        <div class="product-info">
+                            <h3>Điện thoại Xiaomi</h3>
+                            <div class="price">3.500.000đ</div>
+                            <div class="rating">★★★★★</div>
+                            <button class="btn"> <a href="./product.html" style="color:white;">Mua ngay</a></button>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <img src="../images/product/pd3.jpg" alt="iPad Gen 9" />
+                        <div class="product-info">
+                            <h3>iPad Gen 9</h3>
+                            <div class="price">7.900.000đ</div>
+                            <div class="rating">★★★★☆</div>
+                            <button class="btn"> <a href="./product.html" style="color:white;">Mua ngay</a></button>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <img src="../images/product/pd2.jpg" alt="Laptop HP i5" />
+                        <div class="product-info">
+                            <h3>Laptop HP i5</h3>
+                            <div class="price">10.500.000đ</div>
+                            <div class="rating">★★★★★</div>
+                            <button class="btn"> <a href="./product.html" style="color:white;">Mua ngay</a></button>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <img src="../images/product/pd2.jpg" alt="Apple Watch SE" />
+                        <div class="product-info">
+                            <h3>Apple Watch SE</h3>
+                            <div class="price">5.200.000đ</div>
+                            <div class="rating">★★★★☆</div>
+                            <button class="btn"> <a href="./product.html" style="color:white;">Mua ngay</a></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>T5 Market</h3>
+                    <p>Nâng tầm trải nghiệm mua sắm của bạn với giải pháp thương mại điện tử thông minh, an toàn và liền
+                        mạch.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-column">
+                    <h3>Sản phẩm</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Tất cả sản phẩm</a></li>
+                        <li><a href="#">Bán chạy nhất</a></li>
+                        <li><a href="#">Hàng mới về</a></li>
+                        <li><a href="#">Ưu đãi</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h3>Công ty</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Về chúng tôi</a></li>
+                        <li><a href="#">Tin tức</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h3>Hỗ trợ</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Hỗ trợ đơn hàng</a></li>
+                        <li><a href="#">Chính sách đổi trả</a></li>
+                        <li><a href="#">Liên hệ</a></li>
+                        <li><a href="#">Câu hỏi thường gặp</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 T5 Market. Cao đẳng FPT Polytechnic.</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+</html>
