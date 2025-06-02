@@ -1,0 +1,76 @@
+<!-- views/admin/orders/modals/edit-order.ejs:: --> 
+<div class="modal fade" id="editOrderModal" tabindex="-1" aria-labelledby="editOrderModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editOrderModalLabel">Chỉnh Sửa Đơn Hàng</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="editOrderForm">
+                <input type="hidden" id="editOrderId" name="orderId">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="editQuantity" class="form-label">Số lượng <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" id="editQuantity" name="quantity" min="0" required>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="editShippingFee" class="form-label">Phí vận chuyển</label>
+                            <input type="number" class="form-control" id="editShippingFee" name="shippingFee" min="0">
+                        </div>
+
+                        <div class="col-12 mb-3">
+                            <label class="form-label">Tổng tiền:</label>
+                            <div class="fw-bold text-primary fs-5" id="totalAmountEdit">0 ₫</div>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <h6 class="mb-3">Thông tin giao hàng</h6>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="editFullName" class="form-label">Họ tên <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="editFullName" name="shippingAddress.fullName" required>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="editPhoneNumber" class="form-label">Số điện thoại <span class="text-danger">*</span></label>
+                            <input type="tel" class="form-control" id="editPhoneNumber" name="shippingAddress.phoneNumber" required>
+                        </div>
+
+                        <div class="col-12 mb-3">
+                            <label for="editAddress" class="form-label">Địa chỉ <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="editAddress" name="shippingAddress.address" required>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label for="editWard" class="form-label">Phường/Xã</label>
+                            <input type="text" class="form-control" id="editWard" name="shippingAddress.ward">
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label for="editDistrict" class="form-label">Quận/Huyện</label>
+                            <input type="text" class="form-control" id="editDistrict" name="shippingAddress.district">
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label for="editCity" class="form-label">Tỉnh/Thành phố</label>
+                            <input type="text" class="form-control" id="editCity" name="shippingAddress.city">
+                        </div>
+
+                        <div class="col-12 mb-3">
+                            <label for="editNotes" class="form-label">Ghi chú</label>
+                            <textarea class="form-control" id="editNotes" name="notes" rows="3"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-primary">Cập nhật</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

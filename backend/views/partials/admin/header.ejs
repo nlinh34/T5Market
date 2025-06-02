@@ -1,0 +1,24 @@
+<header class="header bg-white shadow-sm">
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <button class="btn btn-link sidebar-toggle d-md-none">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="navbar-collapse">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                            <i class="fas fa-user me-2"></i>
+                            <%= user.fullName %>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <a class="dropdown-item" href="/admin/auth/logout">
+                                <i class="fas fa-sign-out-alt me-2"></i>Đăng xuất
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
