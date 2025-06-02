@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng tin sản phẩm | T5 Market</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- <link rel="stylesheet" href="../css/style.css"> -->
+    <link rel="stylesheet" href="../css/home.css">
+    <link rel="stylesheet" href="../css/post.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="../pages/home.html">
+                    <img src="../images/home/logo.jpg" alt="T5 Market Logo" style="width: 90px; height: 90px;">
+                </a>
+                <div class="search-container">
+                    <form action="#" method="GET">
+                        <input type="text" placeholder="Tìm kiếm sản phẩm..." name="search" class="search-input">
+                        <button type="submit" class="search-btn"><i class="fas fa-search"></i></button>
+                    </form>
+                </div>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="#" style="font-size:21px"><i class="fa-solid fa-bell"></i></a></li>
+                    <li><a href="#" style="font-size:21px"><i class="fa-solid fa-comments"></i></a></li>
+                    <li><a href="./shoppingcart.html" style="font-size:21px"><i class="fa-solid fa-cart-shopping"></i></a></li>
+                    <li class="dropdown"><a href="#" style="font-size:21px"><i class="fa-solid fa-user"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="./login.html">Đăng nhập</a></li>
+                            <li><a href="./register.html">Đăng ký</a></li>
+                            <li><a href="#">Đăng xuất</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="./products.html"><i class="fa-solid fa-bars"></i>Danh mục<i class="fas fa-caret-down"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Điện thoại</a></li>
+                            <li><a href="#">Máy tính bảng</a></li>
+                            <li><a href="#">Laptop</a></li>
+                            <li><a href="#">Máy tính để bàn</a></li>
+                            <li><a href="#">Máy ảnh, Máy quay</a></li>
+                            <li><a href="#">Thiết bị đeo thông minh</a></li>
+                            <li><a href="#">Phụ kiện (Màn hình, Chuột,...)</a></li>
+                            <li><a href="#">Linh kiện (RAM, Card,...)</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#features">Chức năng</a></li>
+                    <li><a href="./about.html">Về chúng tối</a></li>
+                    <li><a href="#contact">Liên hệ</a></li>
+                    <li><a href="#" class="btn">Đăng tin</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="post-container">
+        <div class="container">
+            <h1 class="post-title">Đăng tin sản phẩm</h1>
+            
+            <form class="post-form" id="productPostForm">
+                <!-- Section 1: Thông tin cơ bản -->
+                <div class="form-section">
+                    <h2 class="section-title">Thông tin cơ bản</h2>
+                    <div class="form-group">
+                        <label for="productName">Tiêu đề tin đăng *</label>
+                        <input type="text" id="productName" name="productName" placeholder="Ví dụ: iPhone 13 Pro Max 128GB Like New 99%" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="productCategory">Danh mục tin đăng *</label>
+                        <select id="productCategory" name="productCategory" required>
+                            <option value="">Chọn danh mục</option>
+                            <option value="phone">Điện thoại</option>
+                            <option value="tablet">Máy tính bảng</option>
+                            <option value="laptop">Laptop</option>
+                            <option value="desktop">Máy tính để bàn</option>
+                            <option value="camera">Máy ảnh, Máy quay</option>
+                            <option value="wearable">Thiết bị đeo thông minh</option>
+                            <option value="accessory">Phụ kiện (Màn hình, Chuột,...)</option>
+                            <option value="component">Linh kiện (RAM, Card,...)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="productBrand">Thương hiệu</label>
+                        <input type="text" id="productBrand" name="productBrand" placeholder="Ví dụ: Apple, Samsung,...">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="productModel">Model</label>
+                        <input type="text" id="productModel" name="productModel" placeholder="Ví dụ: iPhone 13 Pro Max">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="productCondition">Tình trạng *</label>
+                        <select id="productCondition" name="productCondition" required>
+                            <option value="">Chọn tình trạng</option>
+                            <option value="new">Hàng mới</option>
+                            <option value="like_new">Like new 99%</option>
+                            <option value="used">Đã sử dụng</option>
+                            <option value="broken">Hư hỏng, cần sửa chữa</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Section 2: Hình ảnh và Video -->
+                <div class="form-section">
+                    <h2 class="section-title">Hình ảnh và Video sản phẩm</h2>
+                    <div class="form-group">
+                        <label>Ảnh sản phẩm (Tối đa 10 ảnh) *</label>
+                        <div class="image-upload-container">
+                            <div class="upload-area" id="uploadArea">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>Kéo thả ảnh vào đây hoặc click để chọn</p>
+                                <input type="file" id="productImages" name="productImages" multiple accept="image/*" style="display: none;">
+                            </div>
+                            <div class="preview-container" id="imagePreviewContainer"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="productVideo">Video sản phẩm (Youtube URL)</label>
+                        <input type="url" id="productVideo" name="productVideo" placeholder="https://www.youtube.com/watch?v=...">
+                    </div>
+                </div>
+                
+                <!-- Section 3: Mô tả chi tiết -->
+                <div class="form-section">
+                    <h2 class="section-title">Mô tả chi tiết</h2>
+                    <div class="form-group">
+                        <label for="productDescription">Mô tả sản phẩm *</label>
+                        <textarea id="productDescription" name="productDescription" rows="6" placeholder="Mô tả chi tiết về sản phẩm, tình trạng, phụ kiện đi kèm,..." required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="productSpecs">Thông số kỹ thuật</label>
+                        <textarea id="productSpecs" name="productSpecs" rows="4" placeholder="Cấu hình chi tiết, dung lượng, màu sắc,..."></textarea>
+                    </div>
+                </div>
+                
+                <!-- Section 4: Giá cả -->
+                <div class="form-section">
+                    <h2 class="section-title">Giá cả</h2>
+                    <div class="form-group">
+                        <label for="productPrice">Giá bán *</label>
+                        <div class="price-input-container">
+                            <input type="number" id="productPrice" name="productPrice" placeholder="Ví dụ: 15000000" required>
+                            <span>VND</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="priceNegotiable">Thương lượng giá</label>
+                        <div class="checkbox-container">
+                            <input type="checkbox" id="priceNegotiable" name="priceNegotiable">
+                            <label for="priceNegotiable">Cho phép thương lượng giá</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Section 5: Thông tin người bán -->
+                <div class="form-section">
+                    <h2 class="section-title">Thông tin người bán</h2>
+                    <div class="form-group">
+                        <label for="sellerName">Tên người bán *</label>
+                        <input type="text" id="sellerName" name="sellerName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="sellerPhone">Số điện thoại *</label>
+                        <input type="tel" id="sellerPhone" name="sellerPhone" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="sellerAddress">Địa chỉ *</label>
+                        <input type="text" id="sellerAddress" name="sellerAddress" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="sellerCity">Tỉnh/Thành phố *</label>
+                        <select id="sellerCity" name="sellerCity" required>
+                            <option value="">Chọn tỉnh/thành phố</option>
+                            <option value="hanoi">Hà Nội</option>
+                            <option value="hcm">TP. Hồ Chí Minh</option>
+                            <option value="danang">Đà Nẵng</option>
+                            <!-- Thêm các tỉnh thành khác -->
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-submit">Đăng tin ngay</button>
+                    <button type="button" class="btn btn-preview">Xem trước</button>
+                    <button type="reset" class="btn btn-reset">Nhập lại</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <!-- Footer (giống trang home) -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>T5 Market</h3>
+                    <p>Nâng tầm trải nghiệm mua sắm của bạn với giải pháp thương mại điện tử thông minh, an toàn và liền mạch.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-column">
+                    <h3>Sản phẩm</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Tất cả sản phẩm</a></li>
+                        <li><a href="#">Bán chạy nhất</a></li>
+                        <li><a href="#">Hàng mới về</a></li>
+                        <li><a href="#">Ưu đãi</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h3>Công ty</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Về chúng tôi</a></li>
+                        <li><a href="#">Tin tức</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h3>Hỗ trợ</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Hỗ trợ đơn hàng</a></li>
+                        <li><a href="#">Chính sách đổi trả</a></li>
+                        <li><a href="#">Liên hệ</a></li>
+                        <li><a href="#">Câu hỏi thường gặp</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 T5 Market. Cao đẳng FPT Polytechnic.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/app.js"></script>
+    <script src="../js/java.js"></script>
+    <script src="../js/post.js"></script>
+</body>
+
+</html>
