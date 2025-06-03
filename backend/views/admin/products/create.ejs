@@ -1,0 +1,61 @@
+<div class="modal fade" id="addProductModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thêm sản phẩm mới</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="addProductForm" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <div class="row g-3">
+                        <!-- Basic Info -->
+                        <div class="col-md-12">
+                            <label class="form-label">Tên sản phẩm</label>
+                            <input type="text" class="form-control" name="name" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Danh mục</label>
+                            <select class="form-select" name="categoryId" required>
+                                <option value="">Chọn danh mục...</option>
+                                <% categories.forEach(cat => { %>
+                                    <option value="<%= cat._id %>"><%= cat.name %></option>
+                                <% }) %>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Giá</label>
+                            <input type="number" class="form-control" name="price" min="0" required>
+                        </div>
+
+                        <!-- Stock Info -->
+                        <div class="col-md-6">
+                            <label class="form-label">Số lượng trong kho</label>
+                            <input type="number" class="form-control" name="stock" min="0" required>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="col-12">
+                            <label class="form-label">Mô tả sản phẩm</label>
+                            <textarea class="form-control" name="description" rows="3" required></textarea>
+                        </div>
+
+                        <!-- Images -->
+                        <div class="col-12">
+                            <label class="form-label">Hình ảnh sản phẩm</label>
+                            <input type="file" class="form-control" name="images" multiple accept="image/*" required>
+                            <div id="imagePreview" class="mt-2 d-flex gap-2 flex-wrap"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-2"></i>Lưu sản phẩm
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
