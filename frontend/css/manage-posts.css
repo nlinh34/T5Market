@@ -1,0 +1,169 @@
+.manage-posts-container {
+    padding: 30px 0;
+    background-color: #f5f7fa;
+    margin-top: 50px;
+}
+
+.user-profile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.user-profile-header h1 {
+    font-size: 24px;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-create-shop {
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.post-status-tabs {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    overflow-x: auto;
+}
+
+.tabs {
+    display: flex;
+    min-width: max-content;
+}
+
+.tab {
+    padding: 15px 20px;
+    border: none;
+    background: none;
+    font-weight: 600;
+    color: #666;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    white-space: nowrap;
+}
+
+.tab.active {
+    color: #4a90e2;
+    border-bottom-color: #4a90e2;
+}
+
+.posts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.post-item {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 20px;
+}
+
+.post-info h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.price {
+    font-weight: bold;
+    color: #e74c3c;
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.location, .date {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.post-stats h4, .post-category h4 {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.post-stats p, .post-category a {
+    font-size: 16px;
+    color: #333;
+}
+
+.view-detail {
+    color: #4a90e2;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.post-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.btn-promote, .btn-quick-sell, .btn-select, .btn-extend, .btn-edit {
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.btn-promote {
+    background-color: #f39c12;
+    color: white;
+}
+
+.btn-quick-sell {
+    background-color: #2ecc71;
+    color: white;
+}
+
+.btn-select {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+.btn-extend {
+    background-color: #3498db;
+    color: white;
+}
+
+.btn-edit {
+    background-color: #95a5a6;
+    color: white;
+}
+
+@media (max-width: 1024px) {
+    .post-item {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .post-item {
+        grid-template-columns: 1fr;
+    }
+}
