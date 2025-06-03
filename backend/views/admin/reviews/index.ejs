@@ -1,0 +1,221 @@
+<div class="container-fluid">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3">Quản lý Đánh giá</h1>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h5>Tổng đánh giá</h5>
+                    <h3><%= stats.total %></h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h5>Đánh giá 5 sao</h5>
+                    <h3><%= stats.fiveStars %></h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-warning text-white">
+                <div class="card-body">
+                    <h5>Đánh giá trung bình</h5>
+                    <h3><%= stats.averageRating.toFixed(1) %>/5</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-danger text-white">
+                <div class="card-body">
+                    <h5>Đánh giá 1 sao</h5>
+                    <h3><%= stats.oneStars %></h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form id="filterForm" class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label">Số sao</label>
+                    <select class="form-select" name="rating">
+                        <option value="">Tất cả</option>
+                        <% for(let i = 5; i >= 1; i--) { %>
+                        <option value="<%= i %>" <%= query.rating == i ? 'selected' : '' %>>
+                            <%= i %> sao
+                        </option>
+                        <% } %>
+                    </select>
+                </div>
+                <div class="col-md-7">
+                    <label class="form-label">Tìm kiếm</label>
+                    <input type="text" class="form-control" name="search" value="<%= query.search || '' %>" 
+                        placeholder="Tên sản phẩm, người đánh giá...">
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="fas fa-search me-2"></i>Tìm kiếm
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Reviews Table -->
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Sản phẩm</th>
+                            <th>Người đánh giá</th>
+                            <th>Đánh giá</th>
+                            <th>Nội dung</th>
+                            <th>Ảnh</th>
+                            <th>Ngày đăng</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% reviews.forEach(review => { %>
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <img src="<%= review.product.images[0] %>" 
+                                        alt="<%= review.product.name %>"
+                                        class="img-thumbnail me-2" style="width: 48px">
+                                    <div>
+                                        <strong><%= review.product.name %></strong><br>
+                                        <small class="text-muted">
+                                            <%= review.product.price.toLocaleString() %>đ
+                                        </small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <%= review.buyer.fullName %><br>
+                                <small class="text-muted"><%= review.buyer.email %></small>
+                            </td>
+                            <td>
+                                <div class="text-warning">
+                                    <% for(let i = 0; i < review.rating; i++) { %>
+                                    <i class="fas fa-star"></i>
+                                    <% } %>
+                                    <% for(let i = review.rating; i < 5; i++) { %>
+                                    <i class="far fa-star"></i>
+                                    <% } %>
+                                </div>
+                            </td>
+                            <td><%= review.comment %></td>
+                            <td>
+                                <% if (review.images && review.images.length > 0) { %>
+                                <button class="btn btn-sm btn-outline-primary"
+                                    onclick="showImages('<%= JSON.stringify(review.images) %>')">
+                                    <i class="fas fa-images"></i> <%= review.images.length %>
+                                </button>
+                                <% } else { %>
+                                <span class="text-muted">-</span>
+                                <% } %>
+                            </td>
+                            <td><%= formatDate(review.createdAt) %></td>
+                            <td>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-sm btn-danger"
+                                        onclick="deleteReview('<%= review._id %>')">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+
+            <%- include('../../partials/admin/pagination', {
+                currentPage: pagination.current,
+                pages: pagination.pages,
+                baseUrl: '/admin/reviews'
+            }) %>
+        </div>
+    </div>
+</div>
+
+<!-- Review Images Modal -->
+<div class="modal fade" id="reviewImagesModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Hình ảnh đánh giá</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div id="reviewImagesCarousel" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner"></div>
+                    <button class="carousel-control-prev" type="button" 
+                        data-bs-target="#reviewImagesCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon"></span>
+                    </button>
+                    <button class="carousel-control-next" type="button"
+                        data-bs-target="#reviewImagesCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function formatDate(dateString) {
+    return new Date(dateString).toLocaleDateString('vi-VN');
+}
+
+function showImages(imagesJSON) {
+    const images = JSON.parse(imagesJSON);
+    const carousel = document.querySelector('#reviewImagesCarousel .carousel-inner');
+    carousel.innerHTML = '';
+    
+    images.forEach((image, index) => {
+        const item = document.createElement('div');
+        item.className = `carousel-item ${index === 0 ? 'active' : ''}`;
+        item.innerHTML = `<img src="${image}" class="d-block w-100" alt="Review image">`;
+        carousel.appendChild(item);
+    });
+    
+    new bootstrap.Modal(document.getElementById('reviewImagesModal')).show();
+}
+
+async function deleteReview(id) {
+    if (confirm('Bạn có chắc chắn muốn xóa đánh giá này?')) {
+        try {
+            const response = await fetch(`/admin/reviews/${id}`, {
+                method: 'DELETE'
+            });
+            
+            if (response.ok) {
+                window.location.reload();
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Có lỗi xảy ra');
+        }
+    }
+}
+
+document.getElementById('filterForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const formData = new FormData(this);
+    const params = new URLSearchParams(formData);
+    window.location.href = `/admin/reviews?${params.toString()}`;
+});
+</script>

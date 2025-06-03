@@ -1,0 +1,222 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-4">
+            <!-- User Profile -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Thông tin cá nhân</h5>
+                </div>
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        <img src="/images/avatar-placeholder.png" class="rounded-circle mb-3" width="128" height="128">
+                        <h4><%= user.fullName %></h4>
+                        <span class="badge bg-<%= user.role === 'SELLER' ? 'success' : 'info' %>">
+                            <%= user.role === 'SELLER' ? 'Người bán' : 'Người mua' %>
+                        </span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label text-muted">Email</label>
+                        <p><%= user.email %></p>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label text-muted">Số điện thoại</label>
+                        <p><%= user.phoneNumber %></p>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label text-muted">Địa chỉ</label>
+                        <p><%= user.address %></p>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label text-muted">Ngày tham gia</label>
+                        <p><%= formatDate(user.createdAt) %></p>
+                    </div>
+
+                    <% if (user.role === 'SELLER') { %>
+                    <div class="mb-3">
+                        <label class="form-label text-muted">Tên cửa hàng</label>
+                        <p><%= user.shopName %></p>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label text-muted">Giấy phép kinh doanh</label>
+                        <p><%= user.businessLicense %></p>
+                    </div>
+                    <% } %>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Thao tác</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <% if (user.isActive) { %>
+                        <button class="btn btn-danger" onclick="blockUser('<%= user._id %>')">
+                            <i class="fas fa-lock me-2"></i>Khóa tài khoản
+                        </button>
+                        <% } else { %>
+                        <button class="btn btn-success" onclick="unblockUser('<%= user._id %>')">
+                            <i class="fas fa-lock-open me-2"></i>Mở khóa tài khoản
+                        </button>
+                        <% } %>
+                        <button class="btn btn-warning" onclick="resetPassword('<%= user._id %>')">
+                            <i class="fas fa-key me-2"></i>Đặt lại mật khẩu
+                        </button>
+                        <button class="btn btn-secondary" onclick="history.back()">
+                            <i class="fas fa-arrow-left me-2"></i>Quay lại
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <!-- Activity Stats -->
+            <div class="row mb-4">
+                <% if (user.role === 'SELLER') { %>
+                <div class="col-md-4">
+                    <div class="card bg-primary text-white">
+                        <div class="card-body">
+                            <h5>Sản phẩm đăng bán</h5>
+                            <h3><%= stats.totalProducts %></h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card bg-success text-white">
+                        <div class="card-body">
+                            <h5>Đơn hàng đã bán</h5>
+                            <h3><%= stats.totalSales %></h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card bg-info text-white">
+                        <div class="card-body">
+                            <h5>Đánh giá</h5>
+                            <h3><%= stats.rating %>/5</h3>
+                        </div>
+                    </div>
+                </div>
+                <% } else { %>
+                <div class="col-md-4">
+                    <div class="card bg-primary text-white">
+                        <div class="card-body">
+                            <h5>Đơn hàng đã mua</h5>
+                            <h3><%= stats.totalOrders %></h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card bg-success text-white">
+                        <div class="card-body">
+                            <h5>Đã thanh toán</h5>
+                            <h3><%= formatCurrency(stats.totalSpent) %></h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card bg-info text-white">
+                        <div class="card-body">
+                            <h5>Đánh giá đã viết</h5>
+                            <h3><%= stats.totalReviews %></h3>
+                        </div>
+                    </div>
+                </div>
+                <% } %>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Hoạt động gần đây</h5>
+                </div>
+                <div class="card-body">
+                    <div class="timeline">
+                        <% activities.forEach(activity => { %>
+                        <div class="timeline-item">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-content">
+                                <h6 class="mb-0"><%= activity.title %></h6>
+                                <small class="text-muted"><%= formatDate(activity.date) %></small>
+                                <p class="mt-2"><%= activity.description %></p>
+                            </div>
+                        </div>
+                        <% }) %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function formatDate(dateString) {
+    return new Date(dateString).toLocaleDateString('vi-VN');
+}
+
+function formatCurrency(amount) {
+    return new Intl.NumberFormat('vi-VN', {
+        style: 'currency',
+        currency: 'VND'
+    }).format(amount);
+}
+
+async function blockUser(id) {
+    if (confirm('Bạn có chắc chắn muốn khóa tài khoản này?')) {
+        try {
+            const response = await fetch(`/admin/users/${id}/block`, {
+                method: 'PUT'
+            });
+            
+            if (response.ok) {
+                window.location.reload();
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Có lỗi xảy ra');
+        }
+    }
+}
+
+async function unblockUser(id) {
+    if (confirm('Bạn có chắc chắn muốn mở khóa tài khoản này?')) {
+        try {
+            const response = await fetch(`/admin/users/${id}/unblock`, {
+                method: 'PUT'
+            });
+            
+            if (response.ok) {
+                window.location.reload();
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Có lỗi xảy ra');
+        }
+    }
+}
+
+async function resetPassword(id) {
+    if (confirm('Bạn có chắc chắn muốn đặt lại mật khẩu cho tài khoản này?')) {
+        try {
+            const response = await fetch(`/admin/users/${id}/reset-password`, {
+                method: 'POST'
+            });
+            
+            if (response.ok) {
+                const result = await response.json();
+                alert(`Mật khẩu mới: ${result.newPassword}`);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Có lỗi xảy ra');
+        }
+    }
+}
+</script>

@@ -1,0 +1,150 @@
+<!-- views/dashboard.ejs: -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card bg-primary text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4><%= stats.totalUsers %></h4>
+                        <p>Người dùng</p>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-users fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-success text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4><%= stats.totalProducts %></h4>
+                        <p>Sản phẩm</p>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-box fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-warning text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4><%= stats.totalOrders %></h4>
+                        <p>Đơn hàng</p>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-shopping-cart fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-info text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4><%= (stats.totalRevenue / 1000000).toFixed(1) %>M</h4>
+                        <p>Doanh thu (VNĐ)</p>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-dollar-sign fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card bg-danger text-white">
+            <div class="card-body">
+                <h5>Sản phẩm chờ duyệt</h5>
+                <h3><%= stats.pendingProducts %></h3>
+                <a href="/admin/products" class="btn btn-light btn-sm">Xem chi tiết</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card bg-secondary text-white">
+            <div class="card-body">
+                <h5>Đơn hàng chờ thanh toán</h5>
+                <h3><%= stats.pendingOrders %></h3>
+                <a href="/admin/orders" class="btn btn-light btn-sm">Xem chi tiết</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5>Thống kê đơn hàng theo tháng</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="monthlyChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5>Đơn hàng gần đây</h5>
+            </div>
+            <div class="card-body">
+                <% recentOrders.forEach(order => { %>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <div>
+                        <small><strong><%= order.buyer.fullName %></strong></small><br>
+                        <% if (order.product) { %>
+                            <small class="text-muted"><%= order.product.name %></small>
+                        <% } else { %>
+                            <small class="text-danger">Sản phẩm không tồn tại</small>
+                        <% } %>
+                    </div>
+                    <div class="text-end">
+                        <small class="text-success"><%= (order.totalAmount).toLocaleString() %>đ</small><br>
+                        <small class="badge bg-<%= order.status === 'DELIVERED' ? 'success' : 'warning' %>">
+                            <%= order.status %>
+                        </small>
+                    </div>
+                </div>
+                <% }); %>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+const ctx = document.getElementById('monthlyChart').getContext('2d');
+new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: monthlyData.map(item => `${item._id.month}/${item._id.year}`),
+        datasets: [{
+            label: 'Số đơn hàng',
+            data: monthlyData.map(item => item.count),
+            borderColor: 'rgb(75, 192, 192)',
+            tension: 0.1
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            title: {
+                display: true,
+                text: 'Thống kê đơn hàng 12 tháng gần đây'
+            }
+        }
+    }
+});
+</script>

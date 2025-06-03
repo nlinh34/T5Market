@@ -1,0 +1,273 @@
+<!-- views/admin/orders/detail.ejs:: --> 
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        Chi tiết đơn hàng #<%= order._id.toString().slice(-6).toUpperCase() %>
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h6 class="text-muted">Thông tin người mua</h6>
+                            <p class="mb-1"><strong><%= order.buyer.fullName %></strong></p>
+                            <p class="mb-1"><i class="fas fa-envelope me-2"></i><%= order.buyer.email %></p>
+                            <p class="mb-1"><i class="fas fa-phone me-2"></i><%= order.buyer.phoneNumber %></p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-muted">Địa chỉ giao hàng</h6>
+                            <p class="mb-1"><strong><%= order.shippingAddress.fullName %></strong></p>
+                            <p class="mb-1"><i class="fas fa-phone me-2"></i><%= order.shippingAddress.phoneNumber %></p>
+                            <p class="mb-1">
+                                <%= order.shippingAddress.address %>,
+                                <%= order.shippingAddress.ward %>,
+                                <%= order.shippingAddress.district %>,
+                                <%= order.shippingAddress.city %>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive mb-4">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Sản phẩm</th>
+                                    <th class="text-center">Số lượng</th>
+                                    <th class="text-end">Đơn giá</th>
+                                    <th class="text-end">Thành tiền</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <img src="<%= order.product.images[0] || 'https://placehold.co/64x64/E0E0E0/FFFFFF?text=No+Image' %>" 
+                                                alt="<%= order.product.name %>"
+                                                class="img-thumbnail me-3" style="width: 64px"
+                                                onerror="this.onerror=null;this.src='https://placehold.co/64x64/E0E0E0/FFFFFF?text=No+Image';">
+                                            <div>
+                                                <h6 class="mb-0"><%= order.product.name %></h6>
+                                                <small class="text-muted">
+                                                    Người bán: <%= order.seller.shopName %>
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-center"><%= order.quantity %></td>
+                                    <td class="text-end"><%= formatCurrency(order.product.price) %></td>
+                                    <td class="text-end">
+                                        <%= formatCurrency(order.product.price * order.quantity) %>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" class="text-end">Phí vận chuyển</td>
+                                    <td class="text-end"><%= formatCurrency(order.shippingFee) %></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" class="text-end"><strong>Tổng cộng</strong></td>
+                                    <td class="text-end">
+                                        <strong><%= formatCurrency(order.totalAmount) %></strong>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <% if (order.notes) { %>
+                    <div class="mb-4">
+                        <h6 class="text-muted">Ghi chú</h6>
+                        <p class="mb-0"><%= order.notes %></p>
+                    </div>
+                    <% } %>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6 class="text-muted">Thanh toán</h6>
+                            <p class="mb-1">
+                                Phương thức: <strong><%= getPaymentMethod(payment.method) %></strong>
+                            </p>
+                            <p class="mb-1">
+                                Trạng thái: 
+                                <span class="badge bg-<%= payment.status === 'COMPLETED' ? 'success' : 'warning' %>">
+                                    <%= getPaymentStatus(payment.status) %>
+                                </span>
+                            </p>
+                            <% if (payment.transactionId) { %>
+                            <p class="mb-1">Mã giao dịch: <%= payment.transactionId %></p>
+                            <% } %>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-muted">Vận chuyển</h6>
+                            <p class="mb-1">
+                                Trạng thái: 
+                                <span class="badge bg-<%= getStatusBadgeClass(order.status) %>">
+                                    <%= getStatusText(order.status) %>
+                                </span>
+                            </p>
+                            <% if (order.trackingNumber) { %>
+                            <p class="mb-1">Mã vận đơn: <%= order.trackingNumber %></p>
+                            <% } %>
+                            <% if (order.deliveryDate) { %>
+                            <p class="mb-1">Ngày giao dự kiến: <%= formatDate(order.deliveryDate) %></p>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Lịch sử đơn hàng</h5>
+                </div>
+                <div class="card-body">
+                    <div class="timeline">
+                        <% order.statusHistory.forEach(history => { %>
+                        <div class="timeline-item">
+                            <div class="timeline-marker bg-<%= getStatusBadgeClass(history.status) %>"></div>
+                            <div class="timeline-content">
+                                <h6 class="mb-0"><%= getStatusText(history.status) %></h6>
+                                <small class="text-muted"><%= formatDateTime(history.date) %></small>
+                                <% if (history.note) { %>
+                                <p class="mt-2 mb-0"><%= history.note %></p>
+                                <% } %>
+                            </div>
+                        </div>
+                        <% }) %>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Thao tác</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <% if (!isOrderCompleted(order.status)) { %>
+                            <button class="btn btn-success" onclick="updateOrderStatus('<%= order._id %>', 'next')">
+                                <i class="fas fa-arrow-right me-2"></i>
+                                <%= getNextStatusText(order.status) %>
+                            </button>
+                        <% } %>
+                        
+                        <% if (isOrderCancellable(order.status)) { %>
+                            <button class="btn btn-danger" onclick="updateOrderStatus('<%= order._id %>', 'cancel')">
+                                <i class="fas fa-times me-2"></i>Hủy đơn hàng
+                            </button>
+                        <% } %>
+
+                        <% if (order.status === 'SHIPPING') { %>
+                            <button class="btn btn-primary" onclick="showMessageBox('Chức năng cập nhật vận chuyển đang được phát triển.', 'info')">
+                                <i class="fas fa-truck me-2"></i>Cập nhật vận chuyển
+                            </button>
+                        <% } %>
+
+                        <% if (payment.status === 'PENDING') { %>
+                            <button class="btn btn-warning" onclick="updatePaymentStatus('<%= order._id %>', 'COMPLETED')">
+                                <i class="fas fa-money-check-alt me-2"></i>Xác nhận đã thanh toán
+                            </button>
+                        <% } else if (payment.status === 'COMPLETED') { %>
+                            <button class="btn btn-secondary" onclick="updatePaymentStatus('<%= order._id %>', 'REFUNDED')">
+                                <i class="fas fa-undo me-2"></i>Xác nhận hoàn tiền
+                            </button>
+                        <% } %>
+
+
+                        <button class="btn btn-secondary" onclick="window.print()">
+                            <i class="fas fa-print me-2"></i>In đơn hàng
+                        </button>
+
+                        <button class="btn btn-light" onclick="history.back()">
+                            <i class="fas fa-arrow-left me-2"></i>Quay lại
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Ghi chú nội bộ</h5>
+                </div>
+                <div class="card-body">
+                    <form id="noteForm">
+                        <div class="mb-3">
+                            <textarea class="form-control" rows="3" 
+                                placeholder="Thêm ghi chú..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="fas fa-save me-2"></i>Lưu ghi chú
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../../partials/message-box') %>
+<%- include('../../partials/confirm-box') %>
+
+<script src="/js/admin/orders.js"></script>
+<script>
+// Các hàm trợ giúp này hiện được truyền từ controller và có sẵn trực tiếp trong phạm vi EJS.
+// Không cần định nghĩa lại chúng ở đây hoặc làm cho chúng trở thành toàn cục thông qua đối tượng window.
+// Nếu bạn vẫn cần chúng trên toàn cục cho các script khác, hãy đảm bảo chúng được định nghĩa trong một file JS dùng chung.
+// Để render EJS, chúng có sẵn vì chúng được truyền như một phần của dữ liệu view.
+// Đối với các lệnh gọi JS phía client, chúng nên được import hoặc được expose ra toàn cục từ orders.js.
+
+// Ví dụ về cách sử dụng các hàm trợ giúp được truyền từ controller trong EJS:
+// <%= formatCurrency(order.totalAmount) %>
+// <%= getStatusText(order.status) %>
+// <%= getNextStatusText(order.status) %> 
+// v.v.
+
+// Các hàm updateStatus, updateTracking, updatePaymentStatus sẽ được gọi từ orders.js
+// vì vậy chúng cần được expose ra toàn cục ở đó.
+</script>
+
+<style>
+    /* CSS cơ bản cho Timeline trong detail.ejs */
+    .timeline {
+        position: relative;
+        padding: 0;
+        list-style: none;
+    }
+
+    .timeline:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 20px; /* Điều chỉnh theo ý muốn */
+        width: 2px;
+        background-color: #e9ecef;
+    }
+
+    .timeline-item {
+        margin-bottom: 20px;
+        position: relative;
+        padding-left: 40px; /* Khoảng trống cho marker */
+    }
+
+    .timeline-marker {
+        position: absolute;
+        top: 0;
+        left: 12px; /* Căn chỉnh với đường kẻ */
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        border: 2px solid #fff; /* Viền trắng để tương phản */
+        z-index: 1;
+    }
+
+    .timeline-content {
+        background-color: #f8f9fa;
+        padding: 15px;
+        border-radius: 5px;
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    }
+</style>

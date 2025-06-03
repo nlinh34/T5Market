@@ -1,0 +1,195 @@
+<div class="container-fluid">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3">Quản lý Người dùng</h1>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal">
+            <i class="fas fa-user-plus me-2"></i>Thêm người dùng
+        </button>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h5>Tổng người dùng</h5>
+                    <h3><%= stats.total %></h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h5>Người bán</h5>
+                    <h3><%= stats.sellers %></h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <h5>Người mua</h5>
+                    <h3><%= stats.buyers %></h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-danger text-white">
+                <div class="card-body">
+                    <h5>Tài khoản bị khóa</h5>
+                    <h3><%= stats.blocked %></h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form id="filterForm" class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label">Vai trò</label>
+                    <select class="form-select" name="role">
+                        <option value="">Tất cả</option>
+                        <option value="SELLER" <%= query.role === 'SELLER' ? 'selected' : '' %>>Người bán</option>
+                        <option value="BUYER" <%= query.role === 'BUYER' ? 'selected' : '' %>>Người mua</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Trạng thái</label>
+                    <select class="form-select" name="status">
+                        <option value="">Tất cả</option>
+                        <option value="active" <%= query.status === 'active' ? 'selected' : '' %>>Hoạt động</option>
+                        <option value="blocked" <%= query.status === 'blocked' ? 'selected' : '' %>>Đã khóa</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Tìm kiếm</label>
+                    <input type="text" class="form-control" name="search" value="<%= query.search || '' %>" 
+                        placeholder="Email, tên, số điện thoại...">
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="fas fa-search me-2"></i>Tìm kiếm
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Users Table -->
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Họ tên</th>
+                            <th>Email</th>
+                            <th>Số điện thoại</th>
+                            <th>Vai trò</th>
+                            <th>Trạng thái</th>
+                            <th>Ngày tạo</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% users.forEach(user => { %>
+                        <tr>
+                            <td><%= user._id %></td>
+                            <td><%= user.fullName %></td>
+                            <td><%= user.email %></td>
+                            <td><%= user.phoneNumber %></td>
+                            <td>
+                                <span class="badge bg-<%= user.role === 'SELLER' ? 'success' : 'info' %>">
+                                    <%= user.role === 'SELLER' ? 'Người bán' : 'Người mua' %>
+                                </span>
+                            </td>
+                            <td>
+                                <span class="badge bg-<%= user.isActive ? 'success' : 'danger' %>">
+                                    <%= user.isActive ? 'Hoạt động' : 'Đã khóa' %>
+                                </span>
+                            </td>
+                            <td><%= formatDate(user.createdAt) %></td>
+                            <td>
+                                <div class="btn-group">
+                                    <a href="/admin/users/<%= user._id %>" class="btn btn-sm btn-info">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <% if (user.isActive) { %>
+                                    <button type="button" class="btn btn-sm btn-danger" 
+                                        onclick="blockUser('<%= user._id %>')">
+                                        <i class="fas fa-lock"></i>
+                                    </button>
+                                    <% } else { %>
+                                    <button type="button" class="btn btn-sm btn-success"
+                                        onclick="unblockUser('<%= user._id %>')">
+                                        <i class="fas fa-lock-open"></i>
+                                    </button>
+                                    <% } %>
+                                </div>
+                            </td>
+                        </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+
+            <%- include('../../partials/admin/pagination', {
+                currentPage: pagination.current,
+                pages: pagination.pages,
+                baseUrl: '/admin/users'
+            }) %>
+        </div>
+    </div>
+</div>
+
+<%- include('./modals/add-user') %>
+
+<script>
+function formatDate(dateString) {
+    return new Date(dateString).toLocaleDateString('vi-VN');
+}
+
+async function blockUser(id) {
+    if (confirm('Bạn có chắc chắn muốn khóa tài khoản này?')) {
+        try {
+            const response = await fetch(`/admin/users/${id}/block`, {
+                method: 'PUT'
+            });
+            
+            if (response.ok) {
+                window.location.reload();
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Có lỗi xảy ra');
+        }
+    }
+}
+
+async function unblockUser(id) {
+    if (confirm('Bạn có chắc chắn muốn mở khóa tài khoản này?')) {
+        try {
+            const response = await fetch(`/admin/users/${id}/unblock`, {
+                method: 'PUT'
+            });
+            
+            if (response.ok) {
+                window.location.reload();
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Có lỗi xảy ra');
+        }
+    }
+}
+
+document.getElementById('filterForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const formData = new FormData(this);
+    const params = new URLSearchParams(formData);
+    window.location.href = `/admin/users?${params.toString()}`;
+});
+</script>
