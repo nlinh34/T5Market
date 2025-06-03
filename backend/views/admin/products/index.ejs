@@ -1,0 +1,542 @@
+<!-- <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="fas fa-box me-2"></i>Quản lý sản phẩm</h2>
+    <div class="d-flex gap-2">
+        <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#filterModal">
+            <i class="fas fa-filter me-2"></i>Lọc
+        </button>
+        <button class="btn btn-success" onclick="exportProducts()">
+            <i class="fas fa-download me-2"></i>Xuất Excel
+        </button>
+    </div>
+</div> -->
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3">Quản lý Sản phẩm</h1>
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addProductModal">
+        <i class="fas fa-plus me-2"></i>Thêm sản phẩm
+    </button>
+</div>
+
+<!-- Filter Cards -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card border-warning">
+            <div class="card-body text-center">
+                <i class="fas fa-clock fa-2x text-warning mb-2"></i>
+                <h5>Chờ duyệt</h5>
+                <h3 class="text-warning" id="pendingCount">0</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-success">
+            <div class="card-body text-center">
+                <i class="fas fa-check-circle fa-2x text-success mb-2"></i>
+                <h5>Đã duyệt</h5>
+                <h3 class="text-success" id="approvedCount">0</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-danger">
+            <div class="card-body text-center">
+                <i class="fas fa-times-circle fa-2x text-danger mb-2"></i>
+                <h5>Bị từ chối</h5>
+                <h3 class="text-danger" id="rejectedCount">0</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-info">
+            <div class="card-body text-center">
+                <i class="fas fa-shopping-cart fa-2x text-info mb-2"></i>
+                <h5>Đã bán</h5>
+                <h3 class="text-info" id="soldCount">0</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Search and Filters -->
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="GET" class="row g-3">
+            <div class="col-md-4">
+                <input type="text" class="form-control" name="search" placeholder="Tìm kiếm sản phẩm..." 
+                       value="<%= query.search || '' %>">
+            </div>
+            <div class="col-md-2">
+                <select class="form-select" name="status">
+                    <option value="">Tất cả trạng thái</option>
+                    <option value="PENDING" <%= query.status === 'PENDING' ? 'selected' : '' %>>Chờ duyệt</option>
+                    <option value="APPROVED" <%= query.status === 'APPROVED' ? 'selected' : '' %>>Đã duyệt</option>
+                    <option value="REJECTED" <%= query.status === 'REJECTED' ? 'selected' : '' %>>Bị từ chối</option>
+                    <option value="SOLD" <%= query.status === 'SOLD' ? 'selected' : '' %>>Đã bán</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <select class="form-select" name="category">
+                    <option value="">Tất cả danh mục</option>
+                    <% categories.forEach(category => { %>
+                    <option value="<%= category._id %>" <%= query.category === category._id.toString() ? 'selected' : '' %>>
+                        <%= category.name %>
+                    </option>
+                    <% }); %>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <select class="form-select" name="condition">
+                    <option value="">Tất cả tình trạng</option>
+                    <option value="NEW" <%= query.condition === 'NEW' ? 'selected' : '' %>>Mới</option>
+                    <option value="LIKE_NEW" <%= query.condition === 'LIKE_NEW' ? 'selected' : '' %>>Như mới</option>
+                    <option value="GOOD" <%= query.condition === 'GOOD' ? 'selected' : '' %>>Tốt</option>
+                    <option value="FAIR" <%= query.condition === 'FAIR' ? 'selected' : '' %>>Khá</option>
+                    <option value="POOR" <%= query.condition === 'POOR' ? 'selected' : '' %>>Cũ</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="fas fa-search me-2"></i>Tìm kiếm
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Products Table -->
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th><input type="checkbox" id="selectAll"></th>
+                        <th>Hình ảnh</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Danh mục</th>
+                        <th>Người bán</th>
+                        <th>Giá</th>
+                        <th>Tình trạng</th>
+                        <th>Trạng thái</th>
+                        <th>Ngày tạo</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (products.length > 0) { %>
+                        <% products.forEach(product => { %>
+                        <tr data-product-id="<%= product._id %>">
+                            <td><input type="checkbox" class="product-checkbox" value="<%= product._id %>"></td>
+                            <td>
+                                <img src="/uploads/<%= product.images[0] || 'no-image.jpg' %>" 
+                                     alt="<%= product.name %>" class="img-thumbnail" style="width: 60px; height: 60px; object-fit: cover;">
+                            </td>
+                            <td>
+                                <strong><%= product.name %></strong><br>
+                                <small class="text-muted"><%= product.brand %></small>
+                            </td>
+                            <td><%= product.category.name %></td>
+                            <td>
+                                <strong><%= product.seller.fullName %></strong><br>
+                                <small class="text-muted"><%= product.seller.shopName || 'N/A' %></small>
+                            </td>
+                            <td class="text-success"><strong><%= product.price.toLocaleString() %>đ</strong></td>
+                            <td>
+                                <span class="badge bg-<%= getConditionColor(product.condition) %>">
+                                    <%= getConditionText(product.condition) %>
+                                </span>
+                            </td>
+                            <td>
+                                <span class="badge bg-<%= getStatusColor(product.status) %>">
+                                    <%= getStatusText(product.status) %>
+                                </span>
+                            </td>
+                            <td><%= new Date(product.createdAt).toLocaleDateString('vi-VN') %></td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <a href="/admin/products/<%= product._id %>" class="btn btn-sm btn-outline-info">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <% if (product.status === 'PENDING') { %>
+                                    <button class="btn btn-sm btn-outline-success" onclick="approveProduct('<%= product._id %>')">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger" onclick="showRejectModal('<%= product._id %>')">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                    <% } %>
+                                    <button class="btn btn-sm btn-outline-danger" onclick="deleteProduct('<%= product._id %>')">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <% }); %>
+                    <% } else { %>
+                        <tr>
+                            <td colspan="10" class="text-center py-4">
+                                <i class="fas fa-box-open fa-3x text-muted mb-3"></i>
+                                <p class="text-muted">Không có sản phẩm nào</p>
+                            </td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <% if (pagination.pages > 1) { %>
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                <li class="page-item <%= pagination.current === 1 ? 'disabled' : '' %>">
+                    <a class="page-link" href="?page=<%= pagination.current - 1 %>&<%= new URLSearchParams(query).toString() %>">
+                        <i class="fas fa-chevron-left"></i>
+                    </a>
+                </li>
+                <% for (let i = 1; i <= pagination.pages; i++) { %>
+                <li class="page-item <%= pagination.current === i ? 'active' : '' %>">
+                    <a class="page-link" href="?page=<%= i %>&<%= new URLSearchParams(query).toString() %>"><%= i %></a>
+                </li>
+                <% } %>
+                <li class="page-item <%= pagination.current === pagination.pages ? 'disabled' : '' %>">
+                    <a class="page-link" href="?page=<%= pagination.current + 1 %>&<%= new URLSearchParams(query).toString() %>">
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <% } %>
+    </div>
+</div>
+
+<!-- Bulk Actions -->
+<div class="card mt-3" id="bulkActions" style="display: none;">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+            <span id="selectedCount">0 sản phẩm được chọn</span>
+            <div class="btn-group">
+                <button class="btn btn-success" onclick="bulkApprove()">
+                    <i class="fas fa-check me-2"></i>Duyệt tất cả
+                </button>
+                <button class="btn btn-warning" onclick="bulkReject()">
+                    <i class="fas fa-times me-2"></i>Từ chối tất cả
+                </button>
+                <button class="btn btn-danger" onclick="bulkDelete()">
+                    <i class="fas fa-trash me-2"></i>Xóa tất cả
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Reject Modal -->
+<div class="modal fade" id="rejectModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Từ chối sản phẩm</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="rejectForm">
+                    <div class="mb-3">
+                        <label for="reason" class="form-label">Lý do từ chối</label>
+                        <textarea class="form-control" id="reason" name="reason" rows="3" required></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-danger" onclick="rejectProduct()">Từ chối</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('./modals/add-product') %>
+<script src="/js/admin/products.js"></script>
+<script>
+let currentProductId = null;
+
+// Helper functions for status and condition
+function getStatusColor(status) {
+    const colors = {
+        'PENDING': 'warning',
+        'APPROVED': 'success',
+        'REJECTED': 'danger',
+        'SOLD': 'info',
+        'HIDDEN': 'secondary'
+    };
+    return colors[status] || 'secondary';
+}
+
+function getStatusText(status) {
+    const texts = {
+        'PENDING': 'Chờ duyệt',
+        'APPROVED': 'Đã duyệt',
+        'REJECTED': 'Bị từ chối',
+        'SOLD': 'Đã bán',
+        'HIDDEN': 'Ẩn'
+    };
+    return texts[status] || status;
+}
+
+function getConditionColor(condition) {
+    const colors = {
+        'NEW': 'success',
+        'LIKE_NEW': 'info',
+        'GOOD': 'primary',
+        'FAIR': 'warning',
+        'POOR': 'danger'
+    };
+    return colors[condition] || 'secondary';
+}
+
+function getConditionText(condition) {
+    const conditions = {
+        'NEW': 'Mới 100%',
+        'LIKE_NEW': 'Như mới',
+        'USED_LIKE_NEW': 'Đã sử dụng (như mới)',
+        'USED_GOOD': 'Đã sử dụng (còn tốt)', 
+        'USED_FAIR': 'Đã sử dụng (trung bình)'
+    };
+    return conditions[condition] || condition;
+}
+
+// Select all functionality
+document.getElementById('selectAll').addEventListener('change', function() {
+    const checkboxes = document.querySelectorAll('.product-checkbox');
+    checkboxes.forEach(checkbox => {
+        checkbox.checked = this.checked;
+    });
+    updateBulkActions();
+});
+
+// Individual checkbox functionality
+document.querySelectorAll('.product-checkbox').forEach(checkbox => {
+    checkbox.addEventListener('change', updateBulkActions);
+});
+
+function updateBulkActions() {
+    const checkedBoxes = document.querySelectorAll('.product-checkbox:checked');
+    const bulkActions = document.getElementById('bulkActions');
+    const selectedCount = document.getElementById('selectedCount');
+    
+    if (checkedBoxes.length > 0) {
+        bulkActions.style.display = 'block';
+        selectedCount.textContent = `${checkedBoxes.length} sản phẩm được chọn`;
+    } else {
+        bulkActions.style.display = 'none';
+    }
+}
+
+// Product actions
+async function approveProduct(productId) {
+    if (!confirm('Bạn có chắc chắn muốn duyệt sản phẩm này?')) return;
+    
+    try {
+        const response = await fetch(`/admin/products/${productId}/approve`, {
+            method: 'PUT'
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok) {
+            showAlert('success', result.message);
+            setTimeout(() => location.reload(), 1000);
+        } else {
+            showAlert('danger', result.message);
+        }
+    } catch (error) {
+        showAlert('danger', 'Có lỗi xảy ra');
+    }
+}
+
+function showRejectModal(productId) {
+    currentProductId = productId;
+    const modal = new bootstrap.Modal(document.getElementById('rejectModal'));
+    modal.show();
+}
+
+async function rejectProduct() {
+    const reason = document.getElementById('reason').value;
+    if (!reason.trim()) {
+        alert('Vui lòng nhập lý do từ chối');
+        return;
+    }
+    
+    try {
+        const response = await fetch(`/admin/products/${currentProductId}/reject`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ reason })
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok) {
+            showAlert('success', result.message);
+            setTimeout(() => location.reload(), 1000);
+        } else {
+            showAlert('danger', result.message);
+        }
+        
+        bootstrap.Modal.getInstance(document.getElementById('rejectModal')).hide();
+    } catch (error) {
+        showAlert('danger', 'Có lỗi xảy ra');
+    }
+}
+
+async function deleteProduct(productId) {
+    if (!confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')) return;
+    
+    try {
+        const response = await fetch(`/admin/products/${productId}`, {
+            method: 'DELETE'
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok) {
+            showAlert('success', result.message);
+            setTimeout(() => location.reload(), 1000);
+        } else {
+            showAlert('danger', result.message);
+        }
+    } catch (error) {
+        showAlert('danger', 'Có lỗi xảy ra');
+    }
+}
+
+// Bulk actions
+async function bulkApprove() {
+    const checkedBoxes = document.querySelectorAll('.product-checkbox:checked');
+    if (checkedBoxes.length === 0) return;
+    
+    if (!confirm(`Bạn có chắc chắn muốn duyệt ${checkedBoxes.length} sản phẩm?`)) return;
+    
+    for (const checkbox of checkedBoxes) {
+        await approveProduct(checkbox.value);
+    }
+}
+
+async function bulkReject() {
+    const checkedBoxes = document.querySelectorAll('.product-checkbox:checked');
+    if (checkedBoxes.length === 0) return;
+    
+    const reason = prompt('Nhập lý do từ chối:');
+    if (!reason) return;
+    
+    for (const checkbox of checkedBoxes) {
+        try {
+            await fetch(`/admin/products/${checkbox.value}/reject`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ reason })
+            });
+        } catch (error) {
+            console.error('Error rejecting product:', error);
+        }
+    }
+    
+    location.reload();
+}
+
+async function bulkDelete() {
+    const checkedBoxes = document.querySelectorAll('.product-checkbox:checked');
+    if (checkedBoxes.length === 0) return;
+    
+    if (!confirm(`Bạn có chắc chắn muốn xóa ${checkedBoxes.length} sản phẩm?`)) return;
+    
+    for (const checkbox of checkedBoxes) {
+        await deleteProduct(checkbox.value);
+    }
+}
+
+function exportProducts() {
+    window.location.href = '/admin/products/export';
+}
+
+function showAlert(type, message) {
+    const alertDiv = document.createElement('div');
+    alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+    alertDiv.style.top = '20px';
+    alertDiv.style.right = '20px';
+    alertDiv.style.zIndex = '9999';
+    alertDiv.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    document.body.appendChild(alertDiv);
+    
+    setTimeout(() => {
+        alertDiv.remove();
+    }, 5000);
+}
+
+// Load statistics
+async function loadStats() {
+    try {
+        const response = await fetch('/admin/products/stats');
+        const stats = await response.json();
+        
+        document.getElementById('pendingCount').textContent = stats.pending || 0;
+        document.getElementById('approvedCount').textContent = stats.approved || 0;
+        document.getElementById('rejectedCount').textContent = stats.rejected || 0;
+        document.getElementById('soldCount').textContent = stats.sold || 0;
+    } catch (error) {
+        console.error('Error loading stats:', error);
+    }
+}
+
+// Load stats on page load
+document.addEventListener('DOMContentLoaded', loadStats);
+</script>
+
+<%
+function getStatusColor(status) {
+    const colors = {
+        'PENDING': 'warning',
+        'APPROVED': 'success',
+        'REJECTED': 'danger',
+        'SOLD': 'info',
+        'HIDDEN': 'secondary'
+    };
+    return colors[status] || 'secondary';
+}
+
+function getStatusText(status) {
+    const texts = {
+        'PENDING': 'Chờ duyệt',
+        'APPROVED': 'Đã duyệt',
+        'REJECTED': 'Bị từ chối',
+        'SOLD': 'Đã bán',
+        'HIDDEN': 'Ẩn'
+    };
+    return texts[status] || status;
+}
+
+function getConditionColor(condition) {
+    const colors = {
+        'NEW': 'success',
+        'LIKE_NEW': 'info',
+        'GOOD': 'primary',
+        'FAIR': 'warning',
+        'POOR': 'danger'
+    };
+    return colors[condition] || 'secondary';
+}
+
+function getConditionText(condition) {
+    const texts = {
+        'NEW': 'Mới',
+        'LIKE_NEW': 'Như mới',
+        'GOOD': 'Tốt',
+        'FAIR': 'Khá',
+        'POOR': 'Cũ'
+    };
+    return texts[condition] || condition;
+}
+%>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thanh toán dịch vụ - T5 Market</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/home.css">
+    <link rel="stylesheet" href="../css/payment.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="../pages/home.html">
+                    <img src="../images/home/logo.jpg" alt="T5 Market Logo" style="width: 90px; height: 90px;">
+                </a>
+                <div class="search-container">
+                    <form action="#" method="GET">
+                        <input type="text" placeholder="Tìm kiếm sản phẩm..." name="search" class="search-input">
+                        <button type="submit" class="search-btn"><i class="fas fa-search"></i></button>
+                    </form>
+                </div>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="#" style="font-size:21px"><i class="fa-solid fa-bell"></i></a></li>
+                    <li><a href="#" style="font-size:21px"><i class="fa-solid fa-comments"></i></a></li>
+                    <li><a href="./shoppingcart.html" style="font-size:21px"><i class="fa-solid fa-cart-shopping"></i></a></li>
+                    <li class="dropdown"><a href="#" style="font-size:21px"><i class="fa-solid fa-user"></i></a>
+                    <ul class="dropdown-menu">
+                            <li><a href="./login.html">Đăng nhập</a></li>
+                            <li><a href="./register.html">Đăng ký</a></li>
+                            <li><a href="#">Đăng xuất</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="dropdown">
+                        <a href="./products.html"><i class="fa-solid fa-bars"></i>Danh mục<i class="fas fa-caret-down"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Điện thoại</a></li>
+                            <li><a href="#">Máy tính bảng</a></li>
+                            <li><a href="#">Laptop</a></li>
+                            <li><a href="#">Máy tính để bàn</a></li>
+                            <li><a href="#">Máy ảnh, Máy quay</a></li>
+                            <li><a href="#">Thiết bị đeo thông minh</a></li>
+                            <li><a href="#">Phụ kiện (Màn hình, Chuột,...)</a></li>
+                            <li><a href="#">Linh kiện (RAM, Card,...)</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="./manage-post.html">Quản Lý Tin</a></li>
+                    <li><a href="./about.html">Về chúng tối</a></li>
+                    <li><a href="#contact">Liên hệ</a></li>
+                    <li><a href="./post.html" class="btn">Đăng tin</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="payment-container">
+        <div class="container">
+            <div class="payment-steps">
+                <div class="step active"><span>1. Chọn dịch vụ</span></div>
+                <div class="step active"><span>2. Thanh toán</span></div>
+                <div class="step"><span>3. Hoàn tất</span></div>
+            </div>
+
+            <div class="payment-content">
+                <div class="order-summary">
+                    <h2>Thông tin đơn hàng</h2>
+                    <div class="product-info">
+                        <h3>màn hình máy tính</h3>
+                        <p>Phường Nghĩa Đô, Quận Cầu Giấy, Hà Nội</p>
+                    </div>
+
+                    <div class="service-details">
+                        <h3>Dịch vụ đã chọn</h3>
+                        <div class="service-item">
+                            <span class="service-name">Tin ưu tiên</span>
+                            <span class="service-price">30.000 đ</span>
+                        </div>
+                    </div>
+
+                    <div class="total-amount">
+                        <span>Tổng cộng:</span>
+                        <span class="amount">30.000 đ</span>
+                    </div>
+                </div>
+
+                <div class="payment-methods">
+                    <h2>Phương thức thanh toán</h2>
+                    <div class="method-options">
+                        <div class="method-option active">
+                            <input type="radio" name="payment-method" id="bank-transfer" checked>
+                            <label for="bank-transfer">
+                                <i class="fas fa-university"></i>
+                                <span>Chuyển khoản ngân hàng</span>
+                            </label>
+                        </div>
+
+                        <div class="method-option">
+                            <input type="radio" name="payment-method" id="ewallet">
+                            <label for="ewallet">
+                                <i class="fas fa-wallet"></i>
+                                <span>Ví điện tử</span>
+                            </label>
+                        </div>
+
+                        <div class="method-option">
+                            <input type="radio" name="payment-method" id="credit-card">
+                            <label for="credit-card">
+                                <i class="far fa-credit-card"></i>
+                                <span>Thẻ tín dụng/Ghi nợ</span>
+                            </label>
+                        </div>
+
+                        <div class="method-option">
+                            <input type="radio" name="payment-method" id="cod">
+                            <label for="cod">
+                                <i class="fas fa-money-bill-wave"></i>
+                                <span>Thanh toán khi nhận dịch vụ</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="bank-info" id="bank-info">
+                        <h3>Thông tin chuyển khoản</h3>
+                        <div class="bank-details">
+                            <p><strong>Ngân hàng:</strong> Techcombank</p>
+                            <p><strong>Số tài khoản:</strong> 1903 6666 8888</p>
+                            <p><strong>Chủ tài khoản:</strong> CONG TY TNHH T5 MARKET</p>
+                            <p><strong>Nội dung chuyển khoản:</strong> T5MK_123456789</p>
+                        </div>
+                        <p class="note">Lưu ý: Vui lòng ghi đúng nội dung chuyển khoản để hệ thống tự động xác nhận giao dịch của bạn.</p>
+                    </div>
+
+                    <div class="payment-terms">
+                        <input type="checkbox" id="agree-terms" required>
+                        <label for="agree-terms">Tôi đồng ý với <a href="#">Điều khoản dịch vụ</a> và <a href="#">Chính sách bảo mật</a> của T5 Market</label>
+                    </div>
+
+                    <button class="btn-confirm-payment">Xác nhận thanh toán</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+       <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>T5 Market</h3>
+                    <p>Nâng tầm trải nghiệm mua sắm của bạn với giải pháp thương mại điện tử thông minh, an toàn và liền
+                        mạch.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-column">
+                    <h3>Sản phẩm</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Tất cả sản phẩm</a></li>
+                        <li><a href="#">Bán chạy nhất</a></li>
+                        <li><a href="#">Hàng mới về</a></li>
+                        <li><a href="#">Ưu đãi</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h3>Công ty</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Về chúng tôi</a></li>
+                        <li><a href="#">Tin tức</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h3>Hỗ trợ</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Hỗ trợ đơn hàng</a></li>
+                        <li><a href="#">Chính sách đổi trả</a></li>
+                        <li><a href="#">Liên hệ</a></li>
+                        <li><a href="#">Câu hỏi thường gặp</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 T5 Market. Cao đẳng FPT Polytechnic.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/payment.js"></script>
+</body>
+</html>
