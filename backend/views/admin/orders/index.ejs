@@ -1,0 +1,184 @@
+<!-- views/admin/orders/.ejs: -->
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3">Quản lý Đơn hàng</h1>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addOrderModal">
+            <i class="fas fa-plus me-2"></i>Thêm đơn hàng
+        </button>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h5>Tổng đơn hàng</h5>
+                    <h3><%= stats.total %></h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-warning text-white">
+                <div class="card-body">
+                    <h5>Chờ xác nhận</h5>
+                    <h3><%= stats.pending %></h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <h5>Đang giao</h5>
+                    <h3><%= stats.shipping %></h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h5>Hoàn thành</h5>
+                    <h3><%= stats.completed %></h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <form id="filterForm" class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label">Trạng thái</label>
+                    <select class="form-select" name="status">
+                        <option value="">Tất cả</option>
+                        <option value="PENDING" <%= query.status === 'PENDING' ? 'selected' : '' %>>Chờ xác nhận</option>
+                        <option value="CONFIRMED" <%= query.status === 'CONFIRMED' ? 'selected' : '' %>>Đã xác nhận</option>
+                        <option value="SHIPPING" <%= query.status === 'SHIPPING' ? 'selected' : '' %>>Đang giao</option>
+                        <option value="DELIVERED" <%= query.status === 'DELIVERED' ? 'selected' : '' %>>Đã giao</option>
+                        <option value="CANCELLED" <%= query.status === 'CANCELLED' ? 'selected' : '' %>>Đã hủy</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Thanh toán</label>
+                    <select class="form-select" name="payment">
+                        <option value="">Tất cả</option>
+                        <option value="PENDING" <%= query.payment === 'PENDING' ? 'selected' : '' %>>Chưa thanh toán</option>
+                        <option value="PAID" <%= query.payment === 'PAID' ? 'selected' : '' %>>Đã thanh toán</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Tìm kiếm</label>
+                    <input type="text" class="form-control" name="search" value="<%= query.search || '' %>" 
+                        placeholder="Mã đơn hàng, tên khách hàng...">
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="fas fa-search me-2"></i>Tìm kiếm
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Mã đơn</th>
+                            <th>Khách hàng</th>
+                            <th>Sản phẩm</th>
+                            <th>Tổng tiền</th>
+                            <th>Thanh toán</th>
+                            <th>Trạng thái</th>
+                            <th>Ngày đặt</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% orders.forEach(order => { %>
+                        <tr>
+                            <td>#<%= order._id.toString().slice(-6).toUpperCase() %></td>
+                            <td>
+                                <%= order.buyer.fullName %><br>
+                                <small class="text-muted"><%= order.buyer.email %></small>
+                            </td>
+                            <td>
+                                <% if (order.product) { %>
+                                    <%= order.product.name %><br>
+                                    <small class="text-muted">x<%= order.quantity %></small>
+                                <% } else { %>
+                                    <span class="text-danger">Sản phẩm không tồn tại</span><br>
+                                    <small class="text-muted">x<%= order.quantity %></small>
+                                <% } %>
+                            </td>
+                            <td><%= helpers.formatCurrency(order.totalAmount) %></td>
+                            <td>
+                                <span class="badge bg-<%= order.isPaid ? 'success' : 'warning' %>">
+                                    <%= order.isPaid ? 'Đã thanh toán' : 'Chưa thanh toán' %>
+                                </span>
+                            </td>
+                            <td>
+                                <span class="badge <%= helpers.getStatusBadgeClass(order.status) %>">
+                                    <%= helpers.getStatusText(order.status) %>
+                                </span>
+                            </td>
+                            <td><%= helpers.formatDate(order.createdAt) %></td>
+                            <td>
+                                <div class="btn-group">
+                                    <a href="/admin/orders/<%= order._id %>" class="btn btn-sm btn-info" 
+                                    title="Xem chi tiết">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+
+                                    <button type="button" class="btn btn-sm btn-warning" 
+                                            onclick="editOrder('<%= order._id %>')"
+                                            <%= helpers.isOrderCompleted(order.status) ? 'disabled' : '' %>
+                                            title="Sửa đơn hàng">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+
+                                    <button type="button" class="btn btn-sm btn-danger"
+                                            onclick="confirmDeleteOrder('<%= order._id %>')"
+                                            <%= !helpers.isOrderCancellable(order.status) && order.status !== 'DELIVERED' ? 'disabled' : '' %>
+                                            title="Xóa đơn hàng">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+
+            <%- include('../../partials/admin/pagination', {
+                currentPage: pagination.current,
+                pages: pagination.pages,
+                baseUrl: '/admin/orders'
+            }) %>
+        </div>
+    </div>
+</div>
+
+<%- include('./modals/add-order') %>
+<%- include('./modals/edit-order') %>
+<%- include('../../partials/message-box') %>
+<%- include('../../partials/confirm-box') %>
+
+<script src="/js/admin/orders.js"></script>
+<script>
+
+document.getElementById('filterForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const formData = new FormData(this);
+    const params = new URLSearchParams();
+    for (let [key, value] of formData.entries()) {
+        if (value) { // Chỉ thêm các giá trị không rỗng vào params
+            params.append(key, value);
+        }
+    }
+    window.location.href = `/admin/orders?${params.toString()}`;
+});
+
+</script>

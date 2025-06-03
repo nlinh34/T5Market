@@ -1,0 +1,104 @@
+<!-- views/admin/orders/modals/add-order.ejs:: --> 
+<div class="modal fade" id="addOrderModal" tabindex="-1" aria-labelledby="addOrderModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addOrderModalLabel">Thêm Đơn Hàng Mới</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="addOrderForm">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="buyerId" class="form-label">Người mua <span class="text-danger">*</span></label>
+                            <select class="form-select" name="buyerId" required>
+                                <option value="">Chọn người mua...</option>
+                                <% buyers.forEach(buyer => { %>
+                                <option value="<%= buyer._id %>">
+                                    <%= buyer.fullName %> (<%= buyer.email %>)
+                                </option>
+                                <% }) %>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="productId" class="form-label">Sản phẩm <span class="text-danger">*</span></label>
+                            <select class="form-select" name="productId" required>
+                                <option value="">Chọn sản phẩm...</option>
+                                <% products.forEach(product => { %>
+                                <option value="<%= product._id %>" 
+                                        data-price="<%= product.price %>"
+                                        data-seller="<%= product.seller._id %>"
+                                        data-stock="<%= product.stock %>">
+                                    <%= product.name %>
+                                    (<%= helpers.formatCurrency(product.price) %>,
+                                    còn <%= product.stock %> sản phẩm)
+                                </option>
+                                <% }) %>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="quantity" class="form-label">Số lượng <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" name="quantity" min="0" value="1" required>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="shippingFee" class="form-label">Phí vận chuyển</label>
+                            <input type="number" class="form-control" name="shippingFee" min="0" value="0">
+                        </div>
+
+                        <div class="col-12 mb-3">
+                            <label class="form-label">Tổng tiền:</label>
+                            <div class="fw-bold text-primary fs-5" id="totalAmount">0 ₫</div>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <h6 class="mb-3">Thông tin giao hàng</h6>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="fullName" class="form-label">Họ tên <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="shippingAddress.fullName" required>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="phoneNumber" class="form-label">Số điện thoại <span class="text-danger">*</span></label>
+                            <input type="tel" class="form-control" name="shippingAddress.phoneNumber" required>
+                        </div>
+
+                        <div class="col-12 mb-3">
+                            <label for="address" class="form-label">Địa chỉ <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="shippingAddress.address" required>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label for="ward" class="form-label">Phường/Xã</label>
+                            <input type="text" class="form-control" name="shippingAddress.ward">
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label for="district" class="form-label">Quận/Huyện</label>
+                            <input type="text" class="form-control" name="shippingAddress.district">
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label for="city" class="form-label">Tỉnh/Thành phố</label>
+                            <input type="text" class="form-control" name="shippingAddress.city">
+                        </div>
+
+                        <div class="col-12 mb-3">
+                            <label for="notes" class="form-label">Ghi chú</label>
+                            <textarea class="form-control" name="notes" rows="3"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-primary">Tạo đơn hàng</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

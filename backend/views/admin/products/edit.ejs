@@ -1,0 +1,167 @@
+<!-- views/admin/products/edit.ejs -->
+
+<%
+// Server-side helper
+function getStatusColor(status) {
+  const colors = {
+    'PENDING': 'warning',
+    'ACTIVE': 'success',
+    'REJECTED': 'danger',
+    'DRAFT': 'info'
+  };
+  return colors[status] || 'secondary';
+}
+function getStatusText(status) {
+  const texts = {
+    'PENDING': 'Chờ duyệt',
+    'ACTIVE': 'Đã hoạt động',
+    'REJECTED': 'Bị từ chối',
+    'DRAFT': 'Nháp'
+  };
+  return texts[status] || status;
+}
+function getConditionColor(condition) {
+  const colors = {
+    'NEW': 'success',
+    'LIKE_NEW': 'info',
+    'USED_LIKE_NEW': 'primary',
+    'USED_GOOD': 'warning',
+    'USED_FAIR': 'danger'
+  };
+  return colors[condition] || 'secondary';
+}
+function getConditionText(condition) {
+  const texts = {
+    'NEW': 'Mới 100%',
+    'LIKE_NEW': 'Như mới',
+    'USED_LIKE_NEW': 'Đã sử dụng (như mới)',
+    'USED_GOOD': 'Đã sử dụng (còn tốt)',
+    'USED_FAIR': 'Đã sử dụng (trung bình)'
+  };
+  return texts[condition] || condition;
+}
+%>
+
+<div class="container my-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3">Chỉnh sửa Sản phẩm</h1>
+    <a href="/admin/products" class="btn btn-secondary">
+      <i class="fas fa-arrow-left me-1"></i>Quay lại
+    </a>
+  </div>
+
+  <form action="/admin/products/<%= product._id %>?_method=PUT" method="POST" enctype="multipart/form-data">
+    <div class="row g-3">
+      <!-- Ảnh cũ & upload ảnh mới -->
+      <div class="col-md-4">
+        <label class="form-label">Ảnh hiện tại</label>
+        <% if (product.images && product.images.length > 0) { %>
+          <img src="<%= product.images[0] %>" class="img-fluid rounded mb-2" alt="Ảnh sản phẩm">
+        <% } else { %>
+          <img src="/uploads/no-image.jpg" class="img-fluid rounded mb-2" alt="Chưa có ảnh">
+        <% } %>
+
+        <label class="form-label mt-2">Chọn ảnh mới (nếu muốn)</label>
+        <input type="file" class="form-control" name="images" multiple accept="image/*">
+      </div>
+
+      <!-- Thông tin sản phẩm -->
+      <div class="col-md-8">
+        <div class="mb-3">
+          <label class="form-label">Tên sản phẩm</label>
+          <input type="text" class="form-control" name="name" value="<%= product.name %>" required>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Mô tả sản phẩm</label>
+          <textarea class="form-control" name="description" rows="3" required><%= product.description %></textarea>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Thương hiệu</label>
+            <input type="text" class="form-control" name="brand" value="<%= product.brand %>" required>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Tình trạng</label>
+            <select class="form-select" name="condition" required>
+              <option value="NEW" <%= product.condition === 'NEW' ? 'selected' : '' %>>Mới 100%</option>
+              <option value="LIKE_NEW" <%= product.condition === 'LIKE_NEW' ? 'selected' : '' %>>Như mới</option>
+              <option value="USED_LIKE_NEW" <%= product.condition === 'USED_LIKE_NEW' ? 'selected' : '' %>>
+                Đã sử dụng (như mới)
+              </option>
+              <option value="USED_GOOD" <%= product.condition === 'USED_GOOD' ? 'selected' : '' %>>
+                Đã sử dụng (còn tốt)
+              </option>
+              <option value="USED_FAIR" <%= product.condition === 'USED_FAIR' ? 'selected' : '' %>>
+                Đã sử dụng (trung bình)
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <label class="form-label">Danh mục</label>
+            <select class="form-select" name="category" required>
+              <% categories.forEach(cat => { %>
+                <option value="<%= cat._id %>" <%= product.category.equals(cat._id) ? 'selected' : '' %>>
+                  <%= cat.name %>
+                </option>
+              <% }) %>
+            </select>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label class="form-label">Người bán</label>
+            <select class="form-select" name="seller" required>
+              <% sellers.forEach(sel => { %>
+                <option value="<%= sel._id %>" <%= product.seller.equals(sel._id) ? 'selected' : '' %>>
+                  <%= sel.fullName %> (<%= sel.shopName || 'N/A' %>)
+                </option>
+              <% }) %>
+            </select>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label class="form-label">Giá (₫)</label>
+            <input
+              type="number"
+              class="form-control"
+              name="price"
+              min="0"
+              value="<%= product.price %>"
+              required
+            >
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <label class="form-label">Trạng thái</label>
+            <select class="form-select" name="status" required>
+              <option value="PENDING" <%= product.status === 'PENDING' ? 'selected' : '' %>>Chờ duyệt</option>
+              <option value="ACTIVE" <%= product.status === 'ACTIVE' ? 'selected' : '' %>>Đã hoạt động</option>
+              <option value="REJECTED" <%= product.status === 'REJECTED' ? 'selected' : '' %>>Bị từ chối</option>
+              <option value="DRAFT" <%= product.status === 'DRAFT' ? 'selected' : '' %>>Nháp</option>
+            </select>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label class="form-label">Số lượng</label>
+            <input
+              type="number"
+              class="form-control"
+              name="stock"
+              min="0"
+              value="<%= product.stock %>"
+              required
+            >
+          </div>
+          <div class="col-md-4 mb-3 d-flex align-items-end">
+            <button type="submit" class="btn btn-primary w-100">
+              <i class="fas fa-save me-1"></i>Lưu thay đổi
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
